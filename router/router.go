@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 
-	docs "lcode/docs"
+	_ "lcode/docs"
 
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -17,7 +17,7 @@ import (
 )
 
 func SetupRouter() *gin.Engine {
-	docs.SwaggerInfo.BasePath = "/api/v1"
+
 	r := gin.Default()
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
