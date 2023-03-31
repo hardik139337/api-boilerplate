@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -29,7 +28,7 @@ func TestMoviecontroller_AddMovie(t *testing.T) {
 		body: models.Movie{
 			Name:     "Titanic",
 			Language: "Hindi",
-			Length:   2 * time.Hour,
+			Length:   1,
 		},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
@@ -48,7 +47,7 @@ func TestMoviecontroller_AddMovie(t *testing.T) {
 			},
 			body: models.Movie{
 				Language: "Hindi",
-				Length:   2 * time.Hour,
+				Length:   2,
 			},
 		},
 	}
@@ -114,7 +113,7 @@ func TestMoviecontroller_UpdateMovie(t *testing.T) {
 			Id:       "id",
 			Name:     "Titanic",
 			Language: "Hindi",
-			Length:   2 * time.Hour,
+			Length:   2,
 		},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
@@ -153,7 +152,7 @@ func TestMoviecontroller_DeleteMovie(t *testing.T) {
 			Id:       "id",
 			Name:     "Titanic",
 			Language: "Hindi",
-			Length:   2 * time.Hour,
+			Length:   2,
 		},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}

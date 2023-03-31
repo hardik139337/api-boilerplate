@@ -1,0 +1,79 @@
+definitions:
+  models.Movie:
+    properties:
+      id:
+        type: string
+      language:
+        type: string
+      length:
+        type: integer
+      name:
+        type: string
+    required:
+    - language
+    - length
+    - name
+    type: object
+info:
+  contact: {}
+paths:
+  /movies:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Movie'
+            type: array
+    post:
+      parameters:
+      - description: Movie JSON
+        in: body
+        name: Movie
+        required: true
+        schema:
+          $ref: '#/definitions/models.Movie'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Movie'
+  /movies/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Movie'
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Movie'
+    patch:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Movie'
+swagger: "2.0"

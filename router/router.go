@@ -9,24 +9,41 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 
+	docs "lcode/docs"
+
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
 func SetupRouter() *gin.Engine {
+	docs.SwaggerInfo.BasePath = "/api/v1"
 	r := gin.Default()
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
+	addMovieRoute(r)
+	return r
+}
+
+func addMovieRoute(r *gin.Engine) {
 	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
-	db.AutoMigrate(&models.Movie{})
 	if err != nil {
 		panic(err)
 	}
+	db.AutoMigrate(&models.Movie{})
+
 	repository := repository.Repository{Db: db}
 	moviec := controller.Moviecontroller{
 		Repository: &repository,
 	}
-	r.POST(constants.Movies, moviec.AddMovie)
-	r.GET(constants.Movies, moviec.GetMovies)
-	r.PATCH(constants.Movies, moviec.UpdateMovie)
-	r.DELETE(constants.Movies, moviec.DeleteMovie)
 
-	return r
+	routeM := r.Group(constants.Movies)
+
+	routeM.POST("", moviec.AddMovie)
+	routeM.GET("", moviec.GetMovies)
+
+	routeM.GET("/:id", moviec.GetByIdMovies)
+	routeM.PATCH("/:id", moviec.UpdateMovie)
+	routeM.DELETE("/:id", moviec.DeleteMovie)
 }
