@@ -15,6 +15,32 @@ definitions:
     - length
     - name
     type: object
+  models.Seat:
+    properties:
+      id:
+        type: string
+      number:
+        type: integer
+      theater_id:
+        type: string
+    type: object
+  models.Theater:
+    properties:
+      address:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      seats:
+        items:
+          $ref: '#/definitions/models.Seat'
+        type: array
+    required:
+    - address
+    - name
+    - seats
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -88,4 +114,69 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Movie'
+  /theaters:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Theater'
+            type: array
+    post:
+      parameters:
+      - description: Theater JSON
+        in: body
+        name: Theater
+        required: true
+        schema:
+          $ref: '#/definitions/models.Theater'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Theater'
+  /theaters/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Theater'
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Theater'
+    patch:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Theater JSON
+        in: body
+        name: Theater
+        required: true
+        schema:
+          $ref: '#/definitions/models.Theater'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Theater'
 swagger: "2.0"

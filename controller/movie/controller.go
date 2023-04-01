@@ -1,4 +1,4 @@
-package controller
+package movie
 
 import (
 	"lcode/models"

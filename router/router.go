@@ -2,7 +2,9 @@ package router
 
 import (
 	"lcode/constants"
-	"lcode/controller"
+
+	controller "lcode/controller/movie"
+	theater "lcode/controller/theater"
 	"lcode/models"
 	"lcode/repository"
 
@@ -22,16 +24,17 @@ func SetupRouter() *gin.Engine {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	addMovieRoute(r)
+	addRoute(r)
 	return r
 }
 
-func addMovieRoute(r *gin.Engine) {
+func addRoute(r *gin.Engine) {
 	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
-	db.AutoMigrate(&models.Movie{})
+
+	db.AutoMigrate(new(models.Movie), new(models.Theater), new(models.Seat))
 
 	repository := repository.Repository{Db: db}
 	moviec := controller.Moviecontroller{
@@ -39,11 +42,23 @@ func addMovieRoute(r *gin.Engine) {
 	}
 
 	routeM := r.Group(constants.Movies)
+	{
+		routeM.POST("", moviec.AddMovie)
+		routeM.GET("", moviec.GetMovies)
+		routeM.GET(constants.ID, moviec.GetByIdMovies)
+		routeM.PATCH(constants.ID, moviec.UpdateMovie)
+		routeM.DELETE(constants.ID, moviec.DeleteMovie)
+	}
 
-	routeM.POST("", moviec.AddMovie)
-	routeM.GET("", moviec.GetMovies)
-
-	routeM.GET("/:id", moviec.GetByIdMovies)
-	routeM.PATCH("/:id", moviec.UpdateMovie)
-	routeM.DELETE("/:id", moviec.DeleteMovie)
+	theaterc := theater.Theatercontroller{
+		Repository: &repository,
+	}
+	routeT := r.Group(constants.Theaters)
+	{
+		routeT.POST("", theaterc.AddTheater)
+		routeT.GET("", theaterc.GetTheaters)
+		routeT.GET("/:id", theaterc.GetByIdTheaters)
+		routeT.PATCH(constants.ID, theaterc.UpdateTheater)
+		routeT.DELETE(constants.ID, theaterc.DeleteTheater)
+	}
 }
