@@ -17,7 +17,7 @@ import (
 
 var rPath = "/test"
 
-func Testtheatercontroller_Addtheater(t *testing.T) {
+func Test_Theatercontroller_Addtheater(t *testing.T) {
 	tests := []struct {
 		name string
 		body models.Theater
@@ -25,7 +25,10 @@ func Testtheatercontroller_Addtheater(t *testing.T) {
 		want int
 	}{{
 		name: "pass",
-		body: models.Theater{},
+		body: models.Theater{
+			Name:    "test",
+			Address: "test", Seats: []models.Seat{},
+		},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
 			ri.On("Create", mock.Anything).Return(nil)
@@ -48,20 +51,20 @@ func Testtheatercontroller_Addtheater(t *testing.T) {
 	m := &Theatercontroller{}
 	router.GET(rPath, m.AddTheater)
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			m.Repository = tt.mock()
-			b, _ := json.Marshal(tt.body)
-			req, _ := http.NewRequest("GET", rPath, bytes.NewReader(b))
-			w := httptest.NewRecorder()
-			router.ServeHTTP(w, req)
-			t.Logf("status: %d", w.Code)
-			t.Logf("response: %s", w.Body.String())
-			assert.Equal(t, tt.want, w.Code)
-		})
+		// t.Run(tt.name, func(t *testing.T) {
+		m.Repository = tt.mock()
+		b, _ := json.Marshal(tt.body)
+		req, _ := http.NewRequest("GET", rPath, bytes.NewReader(b))
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+		t.Logf("status: %d", w.Code)
+		t.Logf("response: %s", w.Body.String())
+		assert.Equal(t, tt.want, w.Code)
+		// })
 	}
 }
 
-func Testtheatercontroller_Gettheaters(t *testing.T) {
+func TestTheatercontroller_Gettheaters(t *testing.T) {
 	tests := []struct {
 		name string
 		body models.Theater
@@ -94,7 +97,7 @@ func Testtheatercontroller_Gettheaters(t *testing.T) {
 	}
 }
 
-func Testtheatercontroller_Updatetheater(t *testing.T) {
+func TestTheatercontroller_Updatetheater(t *testing.T) {
 	tests := []struct {
 		name string
 		body models.Theater
@@ -104,7 +107,8 @@ func Testtheatercontroller_Updatetheater(t *testing.T) {
 		name: "pass",
 		body: models.Theater{
 			Id:   "id",
-			Name: "Titanic",
+			Name: "Titanic", Address: "t",
+			Seats: []models.Seat{},
 		},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
@@ -130,7 +134,7 @@ func Testtheatercontroller_Updatetheater(t *testing.T) {
 	}
 }
 
-func Testtheatercontroller_Deletetheater(t *testing.T) {
+func TestTheatercontroller_Deletetheater(t *testing.T) {
 
 	tests := []struct {
 		name string

@@ -57,7 +57,7 @@ func addRoute(r *gin.Engine) {
 	{
 		routeT.POST("", theaterc.AddTheater)
 		routeT.GET("", theaterc.GetTheaters)
-		routeT.GET("/:id", theaterc.GetByIdTheaters)
+		routeT.GET(constants.ID, theaterc.GetByIdTheaters)
 		routeT.PATCH(constants.ID, theaterc.UpdateTheater)
 		routeT.DELETE(constants.ID, theaterc.DeleteTheater)
 	}
