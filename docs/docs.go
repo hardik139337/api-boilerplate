@@ -119,6 +119,110 @@ const docTemplate = `{
                 }
             }
         },
+        "/shows": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Show"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "parameters": [
+                    {
+                        "description": "show JSON",
+                        "name": "show",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Show"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Show"
+                        }
+                    }
+                }
+            }
+        },
+        "/shows/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Show"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Show"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "show JSON",
+                        "name": "show",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Show"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Show"
+                        }
+                    }
+                }
+            }
+        },
         "/theaters": {
             "get": {
                 "responses": {
@@ -261,13 +365,25 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Show": {
+            "type": "object",
+            "properties": {
+                "MovieId": {
+                    "type": "string"
+                },
+                "StartTime": {
+                    "type": "integer"
+                },
+                "TheaterId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Theater": {
             "type": "object",
-            "required": [
-                "address",
-                "name",
-                "seats"
-            ],
             "properties": {
                 "address": {
                     "type": "string"

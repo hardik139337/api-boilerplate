@@ -4,6 +4,7 @@ import (
 	"lcode/constants"
 
 	controller "lcode/controller/movie"
+	"lcode/controller/show"
 	theater "lcode/controller/theater"
 	"lcode/models"
 	"lcode/repository"
@@ -34,7 +35,7 @@ func addRoute(r *gin.Engine) {
 		panic(err)
 	}
 
-	db.AutoMigrate(new(models.Movie), new(models.Theater), new(models.Seat))
+	db.AutoMigrate(new(models.Movie), new(models.Theater), new(models.Seat), new(models.Show))
 
 	repository := repository.Repository{Db: db}
 	moviec := controller.Moviecontroller{
@@ -60,5 +61,17 @@ func addRoute(r *gin.Engine) {
 		routeT.GET(constants.ID, theaterc.GetByIdTheaters)
 		routeT.PATCH(constants.ID, theaterc.UpdateTheater)
 		routeT.DELETE(constants.ID, theaterc.DeleteTheater)
+	}
+
+	theaterS := show.Showcontroller{
+		Repository: &repository,
+	}
+	routeS := r.Group(constants.SHOWS)
+	{
+		routeS.POST("", theaterS.AddShow)
+		routeS.GET("", theaterS.Getshows)
+		routeS.GET(constants.ID, theaterS.GetByIdshows)
+		routeS.PATCH(constants.ID, theaterS.Updateshow)
+		routeS.DELETE(constants.ID, theaterS.Deleteshow)
 	}
 }

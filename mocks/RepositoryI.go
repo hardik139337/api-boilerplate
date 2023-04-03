@@ -9,13 +9,13 @@ type RepositoryI struct {
 	mock.Mock
 }
 
-// Create provides a mock function with given fields: body
-func (_m *RepositoryI) Create(body interface{}) error {
-	ret := _m.Called(body)
+// Create provides a mock function with given fields: value
+func (_m *RepositoryI) Create(value interface{}) error {
+	ret := _m.Called(value)
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(interface{}) error); ok {
-		r0 = rf(body)
+		r0 = rf(value)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -23,13 +23,13 @@ func (_m *RepositoryI) Create(body interface{}) error {
 	return r0
 }
 
-// Delete provides a mock function with given fields: body
-func (_m *RepositoryI) Delete(body interface{}) error {
-	ret := _m.Called(body)
+// Delete provides a mock function with given fields: value
+func (_m *RepositoryI) Delete(value interface{}) error {
+	ret := _m.Called(value)
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(interface{}) error); ok {
-		r0 = rf(body)
+		r0 = rf(value)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -37,13 +37,13 @@ func (_m *RepositoryI) Delete(body interface{}) error {
 	return r0
 }
 
-// Query provides a mock function with given fields: body
-func (_m *RepositoryI) Query(body interface{}) error {
-	ret := _m.Called(body)
+// Query provides a mock function with given fields: value
+func (_m *RepositoryI) Query(value interface{}) error {
+	ret := _m.Called(value)
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(interface{}) error); ok {
-		r0 = rf(body)
+		r0 = rf(value)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -51,13 +51,13 @@ func (_m *RepositoryI) Query(body interface{}) error {
 	return r0
 }
 
-// QueryAll provides a mock function with given fields: body
-func (_m *RepositoryI) QueryAll(body interface{}) error {
-	ret := _m.Called(body)
+// QueryAll provides a mock function with given fields: value, where
+func (_m *RepositoryI) QueryAll(value interface{}, where interface{}) error {
+	ret := _m.Called(value, where)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(interface{}) error); ok {
-		r0 = rf(body)
+	if rf, ok := ret.Get(0).(func(interface{}, interface{}) error); ok {
+		r0 = rf(value, where)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -65,13 +65,13 @@ func (_m *RepositoryI) QueryAll(body interface{}) error {
 	return r0
 }
 
-// Update provides a mock function with given fields: body
-func (_m *RepositoryI) Update(body interface{}) error {
-	ret := _m.Called(body)
+// Update provides a mock function with given fields: value
+func (_m *RepositoryI) Update(value interface{}) error {
+	ret := _m.Called(value)
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(interface{}) error); ok {
-		r0 = rf(body)
+		r0 = rf(value)
 	} else {
 		r0 = ret.Error(0)
 	}

@@ -23,14 +23,28 @@ type Movies struct {
 }
 
 type Theater struct {
-	Id      string `json:"id"`
-	Name    string `json:"name" binding:"required"`
-	Address string `json:"address" binding:"required"`
-	Seats   []Seat `json:"seats" binding:"required"`
+	Id      string `json:"id" gorm:"primaryKey"`
+	Name    string `json:"name" `
+	Address string `json:"address" `
+	Seats   []Seat `json:"seats" `
 }
 
 type Seat struct {
 	ID        string `json:"id" gorm:"primaryKey"`
 	Number    int    `json:"number"`
 	TheaterID string `json:"theater_id"`
+}
+
+type Show struct {
+	Id        string `json:"id" gorm:"primaryKey"`
+	MovieId   string `json:"MovieId"`
+	TheaterId string `json:"TheaterId"`
+	StartTime int64  `json:"StartTime"`
+}
+
+type Tickets struct {
+	Id     string `json:"id" gorm:"primaryKey"`
+	Price  int    `json:"Price"`
+	ShowId string `json:"ShowId"`
+	SeatId string `json:"SeatId"`
 }

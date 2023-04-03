@@ -39,7 +39,7 @@ func (m *Moviecontroller) AddMovie(c *gin.Context) {
 // @Success      200   {object}  []models.Movie
 func (m *Moviecontroller) GetMovies(c *gin.Context) {
 	var movies []models.Movie
-	err := m.Repository.QueryAll(&movies)
+	err := m.Repository.QueryAll(&movies, nil)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{Message: err.Error()})
 		return

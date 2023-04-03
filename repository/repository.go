@@ -1,10 +1,13 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+)
 
 type RepositoryI interface {
 	Create(value any) error
-	QueryAll(value any) error
+	QueryAll(value any, where any) error
 	Query(value any) error
 	Update(value any) error
 	Delete(value any) error
@@ -17,12 +20,12 @@ type Repository struct {
 func (r *Repository) Create(value any) error {
 	return r.Db.Create(value).Error
 }
-func (r *Repository) QueryAll(value any) error {
-	return r.Db.Find(value).Error
+func (r *Repository) QueryAll(value any, where any) error {
+	return r.Db.Preload(clause.Associations).Where(where).Find(value).Error
 }
 
 func (r *Repository) Query(value any) error {
-	return r.Db.First(value).Error
+	return r.Db.Preload(clause.Associations).First(value).Error
 }
 
 func (r *Repository) Update(value any) error {

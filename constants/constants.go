@@ -8,4 +8,5 @@ const (
 	ID       = "/:id"
 	PATCH    = "PATCH"
 	DELETE   = "DELETE"
+	SHOWS    = "/shows"
 )

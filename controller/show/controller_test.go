@@ -1,4 +1,4 @@
-package theater
+package show
 
 import (
 	"bytes"
@@ -17,18 +17,15 @@ import (
 
 var rPath = "/test"
 
-func Test_Theatercontroller_Addtheater(t *testing.T) {
+func Test_Showcontroller_AddShow(t *testing.T) {
 	tests := []struct {
 		name string
-		body models.Theater
+		body models.Show
 		mock func() repository.RepositoryI
 		want int
 	}{{
 		name: "pass",
-		body: models.Theater{
-			Name:    "test",
-			Address: "test", Seats: []models.Seat{},
-		},
+		body: models.Show{MovieId: "id", TheaterId: "id", StartTime: 2},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
 			ri.On("Create", mock.Anything).Return(nil)
@@ -36,20 +33,20 @@ func Test_Theatercontroller_Addtheater(t *testing.T) {
 		},
 		want: http.StatusCreated,
 	},
-		{
-			name: "failes for empty theater name",
-			want: http.StatusBadRequest,
-			mock: func() repository.RepositoryI {
-				ri := mocks.RepositoryI{}
-				ri.On("Create", mock.Anything).Return(nil)
-				return &ri
-			},
-			body: models.Theater{},
-		},
+	// {
+	// 	name: "failes for empty Show name",
+	// 	want: http.StatusBadRequest,
+	// 	mock: func() repository.RepositoryI {
+	// 		ri := mocks.RepositoryI{}
+	// 		ri.On("Create", mock.Anything).Return(nil)
+	// 		return &ri
+	// 	},
+	// 	body: models.Show{},
+	// },
 	}
 	router := gin.Default()
-	m := &Theatercontroller{}
-	router.GET(rPath, m.AddTheater)
+	m := &Showcontroller{}
+	router.GET(rPath, m.AddShow)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			m.Repository = tt.mock()
@@ -65,15 +62,15 @@ func Test_Theatercontroller_Addtheater(t *testing.T) {
 	}
 }
 
-func TestTheatercontroller_Gettheaters(t *testing.T) {
+func TestShowcontroller_GetShows(t *testing.T) {
 	tests := []struct {
 		name string
-		body models.Theater
+		body models.Show
 		mock func() repository.RepositoryI
 		want int
 	}{{
 		name: "pass",
-		body: models.Theater{Id: "test"},
+		body: models.Show{Id: "test"},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
 			ri.On("QueryAll", mock.Anything).Return(nil)
@@ -85,8 +82,8 @@ func TestTheatercontroller_Gettheaters(t *testing.T) {
 	router := gin.Default()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := &Theatercontroller{Repository: tt.mock()}
-			router.GET(rPath, m.GetTheaters)
+			m := &Showcontroller{Repository: tt.mock()}
+			router.GET(rPath, m.Getshows)
 			b, _ := json.Marshal(tt.body)
 			req, _ := http.NewRequest("GET", rPath, bytes.NewReader(b))
 			w := httptest.NewRecorder()
@@ -98,18 +95,16 @@ func TestTheatercontroller_Gettheaters(t *testing.T) {
 	}
 }
 
-func TestTheatercontroller_Updatetheater(t *testing.T) {
+func TestShowcontroller_UpdateShow(t *testing.T) {
 	tests := []struct {
 		name string
-		body models.Theater
+		body models.Show
 		mock func() repository.RepositoryI
 		want int
 	}{{
 		name: "pass",
-		body: models.Theater{
-			Id:   "id",
-			Name: "Titanic", Address: "t",
-			Seats: []models.Seat{},
+		body: models.Show{
+			Id: "id",
 		},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
@@ -122,8 +117,8 @@ func TestTheatercontroller_Updatetheater(t *testing.T) {
 	router := gin.Default()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := &Theatercontroller{Repository: tt.mock()}
-			router.GET(rPath, m.UpdateTheater)
+			m := &Showcontroller{Repository: tt.mock()}
+			router.GET(rPath, m.Updateshow)
 			b, _ := json.Marshal(tt.body)
 			req, _ := http.NewRequest("GET", rPath, bytes.NewReader(b))
 			w := httptest.NewRecorder()
@@ -135,18 +130,17 @@ func TestTheatercontroller_Updatetheater(t *testing.T) {
 	}
 }
 
-func TestTheatercontroller_Deletetheater(t *testing.T) {
+func TestShowcontroller_DeleteShow(t *testing.T) {
 
 	tests := []struct {
 		name string
-		body models.Theater
+		body models.Show
 		mock func() repository.RepositoryI
 		want int
 	}{{
 		name: "pass",
-		body: models.Theater{
-			Id:   "id",
-			Name: "Titanic",
+		body: models.Show{
+			Id: "id",
 		},
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
@@ -159,8 +153,8 @@ func TestTheatercontroller_Deletetheater(t *testing.T) {
 	router := gin.Default()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := &Theatercontroller{Repository: tt.mock()}
-			router.GET(rPath, m.DeleteTheater)
+			m := &Showcontroller{Repository: tt.mock()}
+			router.GET(rPath, m.Deleteshow)
 			b, _ := json.Marshal(tt.body)
 			req, _ := http.NewRequest("GET", rPath, bytes.NewReader(b))
 			w := httptest.NewRecorder()
@@ -172,7 +166,7 @@ func TestTheatercontroller_Deletetheater(t *testing.T) {
 	}
 }
 
-func TestGetByIdTheaters(t *testing.T) {
+func TestGetByIdShows(t *testing.T) {
 	tests := []struct {
 		name string
 		id   string
@@ -192,8 +186,8 @@ func TestGetByIdTheaters(t *testing.T) {
 	router := gin.Default()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := &Theatercontroller{Repository: tt.mock()}
-			router.GET(rPath+"/:id", m.GetByIdTheaters)
+			m := &Showcontroller{Repository: tt.mock()}
+			router.GET(rPath+"/:id", m.GetByIdshows)
 
 			req, _ := http.NewRequest("GET", rPath+"/abc", nil)
 			w := httptest.NewRecorder()

@@ -38,8 +38,14 @@ func (m *Theatercontroller) AddTheater(c *gin.Context) {
 // @Router /theaters [get]
 // @Success      200   {object}  []models.Theater
 func (m *Theatercontroller) GetTheaters(c *gin.Context) {
+	var TheatersFilter models.Theater
+	err := c.BindQuery(&TheatersFilter)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.Error{Message: err.Error()})
+		return
+	}
 	var Theaters []models.Theater
-	err := m.Repository.QueryAll(&Theaters)
+	err = m.Repository.QueryAll(&Theaters, TheatersFilter)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{Message: err.Error()})
 		return

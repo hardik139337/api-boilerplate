@@ -24,6 +24,17 @@ definitions:
       theater_id:
         type: string
     type: object
+  models.Show:
+    properties:
+      MovieId:
+        type: string
+      StartTime:
+        type: integer
+      TheaterId:
+        type: string
+      id:
+        type: string
+    type: object
   models.Theater:
     properties:
       address:
@@ -36,10 +47,6 @@ definitions:
         items:
           $ref: '#/definitions/models.Seat'
         type: array
-    required:
-    - address
-    - name
-    - seats
     type: object
 host: localhost:8080
 info:
@@ -114,6 +121,71 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Movie'
+  /shows:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Show'
+            type: array
+    post:
+      parameters:
+      - description: show JSON
+        in: body
+        name: show
+        required: true
+        schema:
+          $ref: '#/definitions/models.Show'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Show'
+  /shows/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Show'
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Show'
+    patch:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: show JSON
+        in: body
+        name: show
+        required: true
+        schema:
+          $ref: '#/definitions/models.Show'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Show'
   /theaters:
     get:
       responses:
