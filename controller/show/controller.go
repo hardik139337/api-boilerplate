@@ -36,7 +36,6 @@ func (m *Showcontroller) AddShow(c *gin.Context) {
 	for _, v := range showTheater.Seats {
 		showTickets = append(showTickets, models.Tickets{
 			SeatId: v.ID,
-			Price:  0,
 			ShowId: show.Id,
 			Id:     uuid.New().String(),
 		})

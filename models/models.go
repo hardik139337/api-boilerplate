@@ -37,9 +37,9 @@ type Seat struct {
 
 type Show struct {
 	Id        string `json:"id" gorm:"primaryKey"`
-	MovieId   string `json:"MovieId"`
-	TheaterId string `json:"TheaterId"`
-	StartTime int64  `json:"StartTime"`
+	MovieId   string `json:"MovieId" binding:"required"`
+	TheaterId string `json:"TheaterId" binding:"required"`
+	StartTime int64  `json:"StartTime" binding:"required"`
 }
 
 type Tickets struct {

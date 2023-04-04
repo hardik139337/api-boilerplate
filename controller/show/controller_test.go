@@ -29,20 +29,21 @@ func Test_Showcontroller_AddShow(t *testing.T) {
 		mock: func() repository.RepositoryI {
 			ri := mocks.RepositoryI{}
 			ri.On("Create", mock.Anything).Return(nil)
+			ri.On("Query", mock.Anything).Return(nil)
 			return &ri
 		},
 		want: http.StatusCreated,
 	},
-	// {
-	// 	name: "failes for empty Show name",
-	// 	want: http.StatusBadRequest,
-	// 	mock: func() repository.RepositoryI {
-	// 		ri := mocks.RepositoryI{}
-	// 		ri.On("Create", mock.Anything).Return(nil)
-	// 		return &ri
-	// 	},
-	// 	body: models.Show{},
-	// },
+		{
+			name: "failes for empty Show name",
+			want: http.StatusBadRequest,
+			mock: func() repository.RepositoryI {
+				ri := mocks.RepositoryI{}
+				ri.On("Create", mock.Anything).Return(nil)
+				return &ri
+			},
+			body: models.Show{},
+		},
 	}
 	router := gin.Default()
 	m := &Showcontroller{}
