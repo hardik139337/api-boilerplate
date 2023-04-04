@@ -48,3 +48,20 @@ type Tickets struct {
 	ShowId string `json:"ShowId"`
 	SeatId string `json:"SeatId"`
 }
+
+type Booking struct {
+	Id     string `json:"id" gorm:"primaryKey"`
+	UserId string
+}
+
+type TicketsBooking struct {
+	Id        string `json:"id" gorm:"primaryKey"`
+	BookingId string
+	TicketId  string
+}
+
+type BookingR struct {
+	UserId  string   `json:"UserId" binding:"required"`
+	ShowId  string   `json:"ShowId" binding:"required"`
+	SeatIdS []string `json:"SeatIdS" binding:"required"`
+}

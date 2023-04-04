@@ -11,6 +11,7 @@ type RepositoryI interface {
 	Query(value any) error
 	Update(value any) error
 	Delete(value any) error
+	// Row(Query string, value any) error
 }
 
 type Repository struct {
@@ -34,4 +35,15 @@ func (r *Repository) Update(value any) error {
 
 func (r *Repository) Delete(value any) error {
 	return r.Db.Delete(value).Error
+}
+
+func (r *Repository) Row(Query string, value any) error {
+	rows, err := r.Db.Raw(Query, value).Rows()
+	if err != nil {
+		return err
+	}
+	for rows.Next() {
+		// rows.Scan(&name, &age, &email)
+	}
+	return nil
 }
