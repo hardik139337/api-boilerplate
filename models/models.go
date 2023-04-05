@@ -32,7 +32,7 @@ type Theater struct {
 type Seat struct {
 	ID        string `json:"id" gorm:"primaryKey"`
 	Number    int    `json:"number"`
-	TheaterID string `json:"theater_id"`
+	TheaterID string `json:"TheaterID"`
 }
 
 type Show struct {

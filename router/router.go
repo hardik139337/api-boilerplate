@@ -3,6 +3,7 @@ package router
 import (
 	"lcode/constants"
 
+	"lcode/controller/booking"
 	controller "lcode/controller/movie"
 	"lcode/controller/show"
 	theater "lcode/controller/theater"
@@ -10,12 +11,12 @@ import (
 	"lcode/repository"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/sqlite"
 
 	_ "lcode/docs"
 
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -30,12 +31,16 @@ func SetupRouter() *gin.Engine {
 }
 
 func addRoute(r *gin.Engine) {
-	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
+	dsn := "host=localhost user=postgres password=postgres dbname=gorm port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	// db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 
-	db.AutoMigrate(new(models.Movie), new(models.Theater), new(models.Seat), new(models.Show))
+	db.AutoMigrate(new(models.Movie), new(models.Theater), new(models.Seat), new(models.Show),
+		new(models.Tickets), new(models.Booking), new(models.TicketsBooking))
 
 	repository := repository.Repository{Db: db}
 	moviec := controller.Moviecontroller{
@@ -73,5 +78,17 @@ func addRoute(r *gin.Engine) {
 		routeS.GET(constants.ID, theaterS.GetByIdshows)
 		routeS.PATCH(constants.ID, theaterS.Updateshow)
 		routeS.DELETE(constants.ID, theaterS.Deleteshow)
+	}
+
+	bookingC := booking.Bookingcontroller{
+		Repository: &repository,
+	}
+	routeB := r.Group(constants.BOOKING)
+	{
+		routeB.POST("", bookingC.AddBooking)
+		routeB.GET("", bookingC.GetBookings)
+		routeB.GET(constants.ID, bookingC.GetByIdBookings)
+		routeB.PATCH(constants.ID, bookingC.UpdateBooking)
+		routeB.DELETE(constants.ID, bookingC.DeleteBooking)
 	}
 }

@@ -65,6 +65,23 @@ func (_m *RepositoryI) QueryAll(value interface{}, where interface{}) error {
 	return r0
 }
 
+// Raw provides a mock function with given fields: result, Query, value
+func (_m *RepositoryI) Raw(result interface{}, Query string, value ...interface{}) error {
+	var _ca []interface{}
+	_ca = append(_ca, result, Query)
+	_ca = append(_ca, value...)
+	ret := _m.Called(_ca...)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(interface{}, string, ...interface{}) error); ok {
+		r0 = rf(result, Query, value...)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Update provides a mock function with given fields: value
 func (_m *RepositoryI) Update(value interface{}) error {
 	ret := _m.Called(value)

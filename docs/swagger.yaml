@@ -1,5 +1,27 @@
 basePath: /
 definitions:
+  models.Booking:
+    properties:
+      id:
+        type: string
+      userId:
+        type: string
+    type: object
+  models.BookingR:
+    properties:
+      SeatIdS:
+        items:
+          type: string
+        type: array
+      ShowId:
+        type: string
+      UserId:
+        type: string
+    required:
+    - SeatIdS
+    - ShowId
+    - UserId
+    type: object
   models.Movie:
     properties:
       id:
@@ -17,12 +39,12 @@ definitions:
     type: object
   models.Seat:
     properties:
+      TheaterID:
+        type: string
       id:
         type: string
       number:
         type: integer
-      theater_id:
-        type: string
     type: object
   models.Show:
     properties:
@@ -34,6 +56,10 @@ definitions:
         type: string
       id:
         type: string
+    required:
+    - MovieId
+    - StartTime
+    - TheaterId
     type: object
   models.Theater:
     properties:
@@ -62,6 +88,66 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /Bookings:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Booking'
+            type: array
+  /Bookings/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Booking'
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Booking'
+    patch:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Booking'
+  /bookings:
+    post:
+      parameters:
+      - description: Booking JSON
+        in: body
+        name: booking
+        required: true
+        schema:
+          $ref: '#/definitions/models.BookingR'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Booking'
   /movies:
     get:
       responses:

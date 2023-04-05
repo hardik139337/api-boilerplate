@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"fmt"
 	"lcode/models"
 	"lcode/repository"
 	"net/http"
@@ -14,8 +15,8 @@ type Bookingcontroller struct {
 }
 
 // @Success      201   {object}  models.Booking
-// @Router /Bookings [post]
-// @Param        Booking  body      models.Booking  true  "Booking JSON"
+// @Router /bookings [post]
+// @Param        booking  body      models.BookingR  true  "Booking JSON"
 func (m *Bookingcontroller) AddBooking(c *gin.Context) {
 	var Booking models.BookingR
 
@@ -26,26 +27,27 @@ func (m *Bookingcontroller) AddBooking(c *gin.Context) {
 	}
 	var tickets []models.Tickets
 
-	err = m.Repository.QueryAll(&tickets,&models.Tickets{ShowId: Booking.ShowId})
+	err = m.Repository.Raw(&tickets, "select * from tickets where seat_id IN (?) and show_id = ?",
+		Booking.SeatIdS, Booking.ShowId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.Error{Message: err.Error()})
 		return
 	}
-	var booking = &models.Booking{UserId: Booking.UserId ,Id:uuid.New().String() }
+	fmt.Printf("tickets: %v\n", tickets)
+	var booking = &models.Booking{UserId: Booking.UserId, Id: uuid.New().String()}
 	m.Repository.Create(booking)
 	var ticketBookingArr []models.TicketsBooking
 	for _, v := range tickets {
 		ticketBookingArr = append(ticketBookingArr, models.TicketsBooking{
-			Id: uuid.New().String(),
+			Id:        uuid.New().String(),
 			BookingId: booking.Id,
-			TicketId: v.Id,
+			TicketId:  v.Id,
 		})
 	}
 	m.Repository.Create(&ticketBookingArr)
 
 	c.JSON(http.StatusCreated, Booking)
 }
-
 
 // @Router /Bookings [get]
 // @Success      200   {object}  []models.Booking
@@ -116,4 +118,3 @@ func (m *Bookingcontroller) DeleteBooking(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, Booking)
 }
-

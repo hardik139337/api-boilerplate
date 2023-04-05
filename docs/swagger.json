@@ -18,6 +18,103 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
+        "/Bookings": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Booking"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/Bookings/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Booking"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Booking"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Booking"
+                        }
+                    }
+                }
+            }
+        },
+        "/bookings": {
+            "post": {
+                "parameters": [
+                    {
+                        "description": "Booking JSON",
+                        "name": "booking",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.BookingR"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Booking"
+                        }
+                    }
+                }
+            }
+        },
         "/movies": {
             "get": {
                 "responses": {
@@ -323,6 +420,39 @@
         }
     },
     "definitions": {
+        "models.Booking": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.BookingR": {
+            "type": "object",
+            "required": [
+                "SeatIdS",
+                "ShowId",
+                "UserId"
+            ],
+            "properties": {
+                "SeatIdS": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ShowId": {
+                    "type": "string"
+                },
+                "UserId": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Movie": {
             "type": "object",
             "required": [
@@ -348,19 +478,24 @@
         "models.Seat": {
             "type": "object",
             "properties": {
+                "TheaterID": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "number": {
                     "type": "integer"
-                },
-                "theater_id": {
-                    "type": "string"
                 }
             }
         },
         "models.Show": {
             "type": "object",
+            "required": [
+                "MovieId",
+                "StartTime",
+                "TheaterId"
+            ],
             "properties": {
                 "MovieId": {
                     "type": "string"

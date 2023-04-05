@@ -9,4 +9,5 @@ const (
 	PATCH    = "PATCH"
 	DELETE   = "DELETE"
 	SHOWS    = "/shows"
+	BOOKING  = "/bookings"
 )
