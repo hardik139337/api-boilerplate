@@ -1,7 +1,6 @@
 package booking
 
 import (
-	"fmt"
 	"lcode/models"
 	"lcode/repository"
 	"net/http"
@@ -33,7 +32,6 @@ func (m *Bookingcontroller) AddBooking(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, models.Error{Message: err.Error()})
 		return
 	}
-	fmt.Printf("tickets: %v\n", tickets)
 	var booking = &models.Booking{UserId: Booking.UserId, Id: uuid.New().String()}
 	m.Repository.Create(booking)
 	var ticketBookingArr []models.TicketsBooking
